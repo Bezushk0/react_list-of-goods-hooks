@@ -18,20 +18,21 @@ export const goodsFromServer = [
 const SORT_BY_ALPHABETICALLY = 'alphabetically';
 const SORT_BY_LENGTH = 'length';
 
+enum SortType {
+  Alphabetically = 'alphabetically',
+  ByLength = 'length',
+}
+
 type SortOptions = {
-  goods: string;
+  goods: SortType | string;
   reversed: boolean;
 };
 
-const applySorting = (
+const sortGoods = (
   goodsSort: string[],
   { goods, reversed }: SortOptions,
 ): string[] => {
   const sortedGoods = [...goodsSort];
-
-  if (!goodsFromServer) {
-    return [];
-  }
 
   if (goods) {
     switch (goods) {
@@ -57,7 +58,7 @@ export const App: React.FC = () => {
   const [goodsBy, setGoodsBy] = useState<string>('');
   const [isReversed, setIsReversed] = useState<boolean>(false);
 
-  const visibleGoods: string[] = applySorting(goodsFromServer, {
+  const visibleGoods: string[] = sortGoods(goodsFromServer, {
     goods: goodsBy,
     reversed: isReversed,
   });
